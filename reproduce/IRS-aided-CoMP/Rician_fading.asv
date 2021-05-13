@@ -1,0 +1,12 @@
+function [H] = Rician_fading(p)
+
+theta_AoA = [0, rand(1,p.N_t)*2*pi];
+theta_AoD = [0, rand(1,p.N_r)*2*pi];
+
+
+H_Los = transpose(exp(j*2*pi*(1/2)*sin(theta_AoA)))*transpose(exp(j*2*pi*(1/2)*sin(theta_AoD))');
+H_NLoS = (randn(p.N_r,p.N_t)+j*randn(p.N_r,p.N_t))/sqrt(2);
+
+H = sqrt(p.Rician_f/())
+end
+

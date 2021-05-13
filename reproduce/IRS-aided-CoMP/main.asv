@@ -1,0 +1,28 @@
+clear all,clc,close all
+
+%% Intelligent Reflecting Surface-Aided Joint Processing Coordinated Multipoint Transmission
+% IEEE Trans. Commun. available at https://ieeexplore.ieee.org/document/9279253/
+
+p.cell_type = 'hexagonal';
+p.side_length = 200*sqrt(3);
+p.num_cell = 1;
+if p.num_cell == 1
+    p.simulation_scenario = 'single cell';
+    
+else
+    p.simulation_scenario = 'multi cell';
+end
+
+p.L0_dB = -30; % channel power gain [dB]
+p.L0 = 10^(p.L0_dB/10);
+p.d0 = 1; %reference distance
+% p.dx = ; % link distance
+p.alpha_br = 2.2; % path loss exponent of BS-IRS link (Rician)
+p.alpha_ru = 2.2; % path loss exponent of IRS-user link (Rician)
+p.alpha_bu = 3.6; % path loss exponent of BS-user link (Rayleigh)
+p.Rician_f_dB = 10; % Rician factor [dB]
+p.range_AoA = [0,2*pi]; % arrival of angle is randomly distributed within [0; 2*pi]
+p.range_AoD = [0,2*pi]; % arrival of departure is randomly distributed within [0; 2*pi]
+p.d = 2;
+p.N_r = 2;
+p.variance = -80; % noise variance [dB]
