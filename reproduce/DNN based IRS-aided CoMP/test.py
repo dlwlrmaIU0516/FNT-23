@@ -30,7 +30,7 @@ for P_idx in test_P_tx:
 
 
 
-path = './fig/avg_min_rate_Tx_P[dB]_{}_M_{}'
+path = './fig/Tx_P[dB]_{}_M_{}'
 try:
     if not(os.path.isdir(path.format(p['Tx_P_dB'],p['M']))):
         os.makedirs(os.path.join(path.format(p['Tx_P_dB'],p['M'])))
@@ -48,7 +48,7 @@ plt.xlabel('P_tx [dB]')
 plt.ylabel('Avg. min rate [bps/Hz]')
 plt.show()
 
-save_mat_template_avg_min_rate = './fig/avg_min_rate_Tx_P[dB]_{}_M_{}/BCD_avg_min_rate.mat'
-save_fig_template_avg_min_rate = './fig/avg_min_rate_Tx_P[dB]_{}_M_{}/BCD_avg_min_rate.png'
+save_mat_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}/BCD_avg_min_rate.mat'
+save_fig_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}/BCD_avg_min_rate.png'
 sio.savemat(save_mat_template_avg_min_rate.format(p['Tx_P_dB'],p['M']), {'avg_min_rate':avg_min_rate})
 plt.savefig(save_fig_template_avg_min_rate.format(p['Tx_P_dB'],p['M']))

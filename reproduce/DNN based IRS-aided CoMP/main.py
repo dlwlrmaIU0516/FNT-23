@@ -57,7 +57,7 @@ for idx in range(p['iter']):
 
 
 
-path = './fig/avg_min_rate_Tx_P[dB]_{}_M_{}'
+path = './fig/Tx_P[dB]_{}_M_{}'
 try:
     if not(os.path.isdir(path.format(p['Tx_P_dB'],p['M']))):
         os.makedirs(os.path.join(path.format(p['Tx_P_dB'],p['M'])))
@@ -74,8 +74,8 @@ plt.legend(['Proposed (P_tx = 10 [dB])'])
 plt.xlabel('Iteration')
 plt.ylabel('Avg. min rate [bps/Hz]')
 # plt.show()
-save_mat_template_training_converge = './fig/converge_Tx_P[dB]_{}_M_{}/DL_converge.mat'
-save_fig_template_training_converge = './fig/converge_Tx_P[dB]_{}_M_{}/DL_converge.png'
+save_mat_template_training_converge = './fig/Tx_P[dB]_{}_M_{}/DL_converge.mat'
+save_fig_template_training_converge = './fig/Tx_P[dB]_{}_M_{}/DL_converge.png'
 sio.savemat(save_mat_template_training_converge.format(p['Tx_P_dB'],p['M']), {'avg_min_rate':object})
 plt.savefig(save_fig_template_training_converge.format(p['Tx_P_dB'],p['M']))
 
@@ -101,7 +101,7 @@ plt.xlabel('P_tx [dB]')
 plt.ylabel('Avg. min rate [bps/Hz]')
 plt.show()
 
-save_mat_template_avg_min_rate = './fig/avg_min_rate_Tx_P[dB]_{}_M_{}/DL_avg_min_rate.mat'
-save_fig_template_avg_min_rate = './fig/avg_min_rate_Tx_P[dB]_{}_M_{}/DL_avg_min_rate.png'
+save_mat_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}/DL_avg_min_rate.mat'
+save_fig_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}/DL_avg_min_rate.png'
 sio.savemat(save_mat_template_avg_min_rate.format(p['Tx_P_dB'],p['M']), {'avg_min_rate':test_avg_min_rate})
 plt.savefig(save_fig_template_avg_min_rate.format(p['Tx_P_dB'],p['M']))
