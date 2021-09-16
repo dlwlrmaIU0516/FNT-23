@@ -37,4 +37,4 @@ p['Tx_P'] = 10**(p['Tx_P_dB']/10)
 
 p['batch_size'] = 512
 p['lr'] = 0.01
-p['iter'] = 10
+p['iter'] = 1000
