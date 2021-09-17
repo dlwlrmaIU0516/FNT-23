@@ -95,7 +95,7 @@ for P_idx in test_P_tx:
 
 plt.figure(2)
 plt.grid()
-plt.semilogy(test_P_tx_dB,test_avg_min_rate)
+plt.plot(test_P_tx_dB,test_avg_min_rate)
 plt.legend(['Proposed'])
 plt.xlabel('P_tx [dB]')
 plt.ylabel('Avg. min rate [bps/Hz]')

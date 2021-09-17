@@ -32,7 +32,7 @@ p['d'] = 2   # number of desired data streams
 p['variance'] = -80 # noise variance [dB]
 p['np'] = 10**(p['variance']*0.001/10)
 p['channel_realization'] = 500 # channel realizations
-p['Tx_P_dB'] = 30
+p['Tx_P_dB'] = 10
 p['Tx_P'] = 10**(p['Tx_P_dB']/10)
 
 p['batch_size'] = 512
