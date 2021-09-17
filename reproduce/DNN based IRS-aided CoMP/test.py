@@ -43,7 +43,7 @@ except OSError as e:
 plt.figure(1)
 plt.grid()
 plt.plot(test_P_tx_dB,avg_min_rate)
-plt.legend(['Proposed'])
+plt.legend(['BCD'])
 plt.xlabel('P_tx [dB]')
 plt.ylabel('Avg. min rate [bps/Hz]')
 plt.show()
