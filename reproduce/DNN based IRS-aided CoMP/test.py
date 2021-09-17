@@ -12,7 +12,7 @@ warnings.filterwarnings(action='ignore')
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 p['batch_size'] = 1
-test_P_tx_dB = range(p['Tx_P_dB']-20,p['Tx_P_dB']+20,2)
+test_P_tx_dB = range(p['Tx_P_dB']-30,p['Tx_P_dB']+30,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)
 avg_min_rate = np.zeros(np.size(test_P_tx))
 num_experiments = 100
