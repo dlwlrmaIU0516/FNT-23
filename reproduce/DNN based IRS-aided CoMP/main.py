@@ -69,7 +69,7 @@ except OSError as e:
 
 plt.figure(1)
 plt.grid()
-plt.semilogy(range(p['iter']),object)
+plt.plot(range(p['iter']),object)
 plt.legend(['Proposed (P_tx = 10 [dB])'])
 plt.xlabel('Iteration')
 plt.ylabel('Avg. min rate [bps/Hz]')
