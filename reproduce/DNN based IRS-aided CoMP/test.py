@@ -24,7 +24,7 @@ for P_idx in test_P_tx:
         H = channel_realization(p)
         min_rate_temp = np.append(min_rate_temp,AO_cvx(p,H))
         if exp_idx % 10 == 0:
-            print('P_tx [dB] : ',test_P_tx_dB[idx],', # experiments : ',exp_idx)
+            print('P_tx [dB] : ',test_P_tx_dB[idx],', # experiments : ',exp_idx,',converge : ',min_rate_temp)
     avg_min_rate[idx] = np.mean(min_rate_temp)
     idx += 1
 
