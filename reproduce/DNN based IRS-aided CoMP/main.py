@@ -79,7 +79,7 @@ save_fig_template_training_converge = './fig/Tx_P[dB]_{}_M_{}/DL_converge.png'
 sio.savemat(save_mat_template_training_converge.format(p['Tx_P_dB'],p['M']), {'avg_min_rate':object})
 plt.savefig(save_fig_template_training_converge.format(p['Tx_P_dB'],p['M']))
 
-test_P_tx_dB = range(p['Tx_P_dB']-30,p['Tx_P_dB']+60,2)
+test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+30,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)
 test_avg_min_rate = np.zeros(np.size(test_P_tx))
 idx_temp = 0
