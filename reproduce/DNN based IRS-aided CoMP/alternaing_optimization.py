@@ -12,11 +12,11 @@ def AO_cvx(p,H):
         U = f_update_U(p,H_bar,W)
         Q = f_update_Q(p,H_bar,W,U)
         W = f_update_W(p,H_bar,W,U,Q)
-        Phi = f_update_Phi(p,H_bar,W,U,Q,H,Phi)
+        #Phi = f_update_Phi(p,H_bar,W,U,Q,H,Phi)
         min_rate = np.append(min_rate,f_min_rate(p,H,W,U,Q,Phi))
         if np.size(min_rate)>2 and np.abs(min_rate[-1]-min_rate[-2])<1e-3:
             break
-    return min_rate
+    return min_rate, W, Phi
 
 def f_initialize_W(p,H):
     w = []
