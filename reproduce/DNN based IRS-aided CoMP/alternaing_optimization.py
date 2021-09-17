@@ -16,7 +16,7 @@ def AO_cvx(p,H):
         min_rate = np.append(min_rate,f_min_rate(p,H,W,U,Q,Phi))
         if np.size(min_rate)>2 and np.abs(min_rate[-1]-min_rate[-2])<1e-3:
             break
-    return min_rate, W, Phi
+    return min_rate
 
 def f_initialize_W(p,H):
     w = []
