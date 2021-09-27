@@ -18,18 +18,18 @@ class IRS_CoMP_Net(nn.Module):
         self.d = d
         self.P = P
 
-        self.fc1_1 = nn.Linear(self.N_t*self.N_r*2*self.N_BS*self.K,1298) # direct link
+        self.fc1_1 = nn.Linear(self.N_t*self.N_r*2*self.N_BS*self.K,7200) # direct link
         self.fc1_2 = nn.Linear(self.N_t*self.M*2*self.N_BS,7200) # reflect link for BS-ISR
         self.fc1_3 = nn.Linear(self.M*self.N_r*2*self.K,7200) # reflect link for ISR-User
 
-        self.fc2 = nn.Linear(7200*2+1298,512)
-        self.fc3 = nn.Linear(512,512)
+        self.fc2 = nn.Linear(7200*2+7200,7200)
+        self.fc3 = nn.Linear(7200,7200)
 
-        self.fc4_1 = nn.Linear(512,256)
-        self.fc4_2 = nn.Linear(512,256)
+        self.fc4_1 = nn.Linear(7200,7200)
+        self.fc4_2 = nn.Linear(7200,7200)
 
-        self.fc5_1 = nn.Linear(256,N_BS*d*K*N_t*2)
-        self.fc5_2 = nn.Linear(256,M*2)
+        self.fc5_1 = nn.Linear(7200,N_BS*d*K*N_t*2)
+        self.fc5_2 = nn.Linear(7200,M*2)
         
     def IRS_normalization(self, y2):
         temp = torch.reshape(y2,(self.batch_size,self.M,2))
@@ -138,9 +138,9 @@ def loss_calculator(H,p,BS,IRS):
     H_bar_2 = torch.cat([H_bar_1_2,H_bar_2_2,H_bar_3_2],2)
     H_bar_3 = torch.cat([H_bar_1_3,H_bar_2_3,H_bar_3_3],2)
 
-    W_1 = torch.cat((BS[:,:,0:2],BS[:,:,2:4],BS[:,:,4:6]),1)
-    W_2 = torch.cat((BS[:,:,6:8],BS[:,:,8:10],BS[:,:,10:12]),1)
-    W_3 = torch.cat((BS[:,:,12:14],BS[:,:,14:16],BS[:,:,16:18]),1)
+    W_1 = torch.cat((BS[:,:,0:2],BS[:,:,6:8],BS[:,:,12:14]),1)
+    W_2 = torch.cat((BS[:,:,2:4],BS[:,:,8:10],BS[:,:,14:16]),1)
+    W_3 = torch.cat((BS[:,:,4:6],BS[:,:,10:12],BS[:,:,16:18]),1)
 
     channel_covar_1 = torch.matmul(torch.matmul(H_bar_1,W_1),torch.transpose(torch.conj(torch.matmul(H_bar_1,W_1)),1,2))
     inter_covar_1 = torch.matmul(torch.matmul(H_bar_1,(torch.matmul(W_2,torch.transpose(torch.conj(W_2),1,2))+torch.matmul(W_3,torch.transpose(torch.conj(W_3),1,2)))),torch.transpose(torch.conj(H_bar_1),1,2))+torch.eye(torch.tensor(p['N_r']))*torch.tensor(p['np'])

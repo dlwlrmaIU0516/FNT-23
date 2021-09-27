@@ -79,11 +79,11 @@ save_fig_template_training_converge = './fig/Tx_P[dB]_{}_M_{}/DL_converge.png'
 sio.savemat(save_mat_template_training_converge.format(p['Tx_P_dB'],p['M']), {'avg_min_rate':object})
 plt.savefig(save_fig_template_training_converge.format(p['Tx_P_dB'],p['M']))
 
-test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+30,2)
+test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+10,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)
 test_avg_min_rate = np.zeros(np.size(test_P_tx))
 idx_temp = 0
-p['batch_size'] = 5000
+p['batch_size'] = 10
 NN_CoMP.batch_size = p['batch_size']
 for P_idx in test_P_tx:
     NN_CoMP.P = P_idx
@@ -99,7 +99,7 @@ plt.plot(test_P_tx_dB,test_avg_min_rate)
 plt.legend(['Proposed'])
 plt.xlabel('P_tx [dB]')
 plt.ylabel('Avg. min rate [bps/Hz]')
-plt.show()
+#plt.show()
 
 save_mat_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}/DL_avg_min_rate.mat'
 save_fig_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}/DL_avg_min_rate.png'

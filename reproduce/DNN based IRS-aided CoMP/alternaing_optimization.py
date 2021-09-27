@@ -6,15 +6,14 @@ def AO_cvx(p,H):
     W = f_initialize_W(p,H)
     Phi = f_initialize_Phi(p,H)
     min_rate = []
-
     while 1:
         H_bar = f_construct_H_bar(p,H,Phi)
         U = f_update_U(p,H_bar,W)
         Q = f_update_Q(p,H_bar,W,U)
-        #W = f_update_W(p,H_bar,W,U,Q)
+        W = f_update_W(p,H_bar,W,U,Q)
         Phi = f_update_Phi(p,H_bar,W,U,Q,H,Phi)
         min_rate = np.append(min_rate,f_min_rate(p,H,W,U,Q,Phi))
-        if np.size(min_rate)>2 and np.abs(min_rate[-1]-min_rate[-2])<1e-3:
+        if np.size(min_rate)>2 and np.abs(min_rate[-1]-min_rate[-2])<1e-2:
             break
     return min_rate
 
@@ -25,9 +24,9 @@ def f_initialize_W(p,H):
         for n_idx in range(p['K']):
             temp_w = (np.random.normal(0,1,(p['N_t'],p['d']))+np.random.normal(0,1,(p['N_t'],p['d']))*1j)/np.sqrt(2)
             try :
-                w = np.concatenate((w,temp_w/np.linalg.norm(temp_w,ord='fro')*(p['Tx_P']/p['K'])),axis=0)
+                w = np.concatenate((w,temp_w/np.linalg.norm(temp_w,ord='fro')*np.sqrt((p['Tx_P']/p['K']))),axis=0)
             except np.AxisError and ValueError as e:
-                w = temp_w/np.linalg.norm(temp_w,ord='fro')*(p['Tx_P']/p['K'])
+                w = temp_w/np.linalg.norm(temp_w,ord='fro')*np.sqrt((p['Tx_P']/p['K']))
                 pass  
     W['W_1'] = w[0:p['N_t']*p['num_BS'],:]                            # W for ue1
     W['W_2'] = w[p['N_t']*p['num_BS']:p['N_t']*p['num_BS']*2,:]       # W for ue2
@@ -48,23 +47,22 @@ def f_update_U(p,H_bar,W):
 
 def f_update_Q(p,H_bar,W,U):
     Q = {}
-    temp_W = W['W_1']@W['W_1'].conj().T+W['W_2']@W['W_2'].conj().T+W['W_3']@W['W_3'].conj().T
 
-    Q['Q_1'] = np.eye(p['d'])+W['W_1'].conj().T@H_bar['H_1'].conj().T@np.linalg.inv(H_bar['H_1']@temp_W@H_bar['H_1'].conj().T+p['np']*np.eye(p['N_r']))@H_bar['H_1']@W['W_1']
-    Q['Q_2'] = np.eye(p['d'])+W['W_2'].conj().T@H_bar['H_2'].conj().T@np.linalg.inv(H_bar['H_2']@temp_W@H_bar['H_2'].conj().T+p['np']*np.eye(p['N_r']))@H_bar['H_2']@W['W_2']
-    Q['Q_3'] = np.eye(p['d'])+W['W_3'].conj().T@H_bar['H_3'].conj().T@np.linalg.inv(H_bar['H_3']@temp_W@H_bar['H_3'].conj().T+p['np']*np.eye(p['N_r']))@H_bar['H_3']@W['W_3']
+    Q['Q_1'] = np.linalg.inv(np.eye(p['d'])-W['W_1'].conj().T@H_bar['H_1'].conj().T@U['U_1'])
+    Q['Q_2'] = np.linalg.inv(np.eye(p['d'])-W['W_2'].conj().T@H_bar['H_2'].conj().T@U['U_2'])
+    Q['Q_3'] = np.linalg.inv(np.eye(p['d'])-W['W_3'].conj().T@H_bar['H_3'].conj().T@U['U_3'])
     return Q
 
 def f_update_W(p,H_bar,W,U,Q):
-    var_W_1_1 = cp.Variable([p['N_t'],p['d']],complex=True)  # W_n,k
-    var_W_1_2 = cp.Variable([p['N_t'],p['d']],complex=True)
-    var_W_1_3 = cp.Variable([p['N_t'],p['d']],complex=True)
-    var_W_2_1 = cp.Variable([p['N_t'],p['d']],complex=True)
-    var_W_2_2 = cp.Variable([p['N_t'],p['d']],complex=True)
-    var_W_2_3 = cp.Variable([p['N_t'],p['d']],complex=True)
-    var_W_3_1 = cp.Variable([p['N_t'],p['d']],complex=True)
-    var_W_3_2 = cp.Variable([p['N_t'],p['d']],complex=True)
-    var_W_3_3 = cp.Variable([p['N_t'],p['d']],complex=True)
+    var_W_1_1 = cp.Variable([p['N_t'],p['d']])  # W_n,k
+    var_W_1_2 = cp.Variable([p['N_t'],p['d']])
+    var_W_1_3 = cp.Variable([p['N_t'],p['d']])
+    var_W_2_1 = cp.Variable([p['N_t'],p['d']])
+    var_W_2_2 = cp.Variable([p['N_t'],p['d']])
+    var_W_2_3 = cp.Variable([p['N_t'],p['d']])
+    var_W_3_1 = cp.Variable([p['N_t'],p['d']])
+    var_W_3_2 = cp.Variable([p['N_t'],p['d']])
+    var_W_3_3 = cp.Variable([p['N_t'],p['d']])
     var_R = cp.Variable([1])
 
     var_W_1 = cp.vstack([var_W_1_1,var_W_2_1,var_W_3_1]) # W_k
@@ -96,8 +94,11 @@ def f_update_W(p,H_bar,W,U,Q):
                             cp.reshape(cp.vec(var_W_3.H@H_bar['H_3'].conj().T@U['U_3']@Q['Q_3']**(1/2)-Q['Q_3']**(1/2)),(2*p['d'],1))])
                             
     soc_constraint_1 = [cp.SOC(np.sqrt(p['Tx_P']),var_eta_1),
-                        cp.SOC(np.sqrt(p['Tx_P']),var_eta_2),
+                       cp.SOC(np.sqrt(p['Tx_P']),var_eta_2),
                         cp.SOC(np.sqrt(p['Tx_P']),var_eta_3)]
+    #soc_constraint_1 = [np.sqrt(p['Tx_P'])>=cp.norm(var_eta_1),
+    #                    np.sqrt(p['Tx_P'])>=cp.norm(var_eta_2),
+    #                    np.sqrt(p['Tx_P'])>=cp.norm(var_eta_3)]
 
     soc_constraint_2 = [np.linalg.slogdet(Q['Q_1'])[1]+p['d']-p['np']*np.real(np.trace(Q['Q_1']@U['U_1'].conj().T@U['U_1']))>=cp.norm(var_omega_1)**2+var_R,
                         np.linalg.slogdet(Q['Q_2'])[1]+p['d']-p['np']*np.real(np.trace(Q['Q_2']@U['U_2'].conj().T@U['U_2']))>=cp.norm(var_omega_2)**2+var_R,
@@ -106,6 +107,7 @@ def f_update_W(p,H_bar,W,U,Q):
     soc_constraints = soc_constraint_1+soc_constraint_2
 
     prob = cp.Problem(cp.Maximize(var_R),soc_constraints)
+    #prob.solve(verbose=True)
     prob.solve()
     W['W_1'] = var_W_1.value
     W['W_2'] = var_W_2.value
@@ -223,10 +225,12 @@ def f_min_rate(p,H_bar,W,U,E,Phi):
 def f_rate(p,H,W,U,Q,Phi):
     rate = {}
     H_bar = f_construct_H_bar(p,H,Phi)
-    temp_W = W['W_1']@W['W_1'].conj().T+W['W_2']@W['W_2'].conj().T+W['W_3']@W['W_3'].conj().T
-    temp_F_1 = H_bar['H_1']@temp_W@H_bar['H_1'].conj().T+p['np']*np.eye(p['N_r'])
-    temp_F_2 = H_bar['H_2']@temp_W@H_bar['H_2'].conj().T+p['np']*np.eye(p['N_r'])
-    temp_F_3 = H_bar['H_3']@temp_W@H_bar['H_3'].conj().T+p['np']*np.eye(p['N_r'])
+    temp_W_1 = W['W_2']@W['W_2'].conj().T+W['W_3']@W['W_3'].conj().T
+    temp_W_2 = W['W_1']@W['W_1'].conj().T+W['W_3']@W['W_3'].conj().T
+    temp_W_3 = W['W_1']@W['W_1'].conj().T+W['W_2']@W['W_2'].conj().T
+    temp_F_1 = H_bar['H_1']@temp_W_1@H_bar['H_1'].conj().T+p['np']*np.eye(p['N_r'])
+    temp_F_2 = H_bar['H_2']@temp_W_2@H_bar['H_2'].conj().T+p['np']*np.eye(p['N_r'])
+    temp_F_3 = H_bar['H_3']@temp_W_3@H_bar['H_3'].conj().T+p['np']*np.eye(p['N_r'])
     rate['rate_1'] = np.linalg.slogdet(np.eye(p['N_r'])+H_bar['H_1']@W['W_1']@W['W_1'].conj().T@H_bar['H_1'].conj().T@np.linalg.inv(temp_F_1))[1]
     rate['rate_2'] = np.linalg.slogdet(np.eye(p['N_r'])+H_bar['H_2']@W['W_2']@W['W_2'].conj().T@H_bar['H_2'].conj().T@np.linalg.inv(temp_F_2))[1]
     rate['rate_3'] = np.linalg.slogdet(np.eye(p['N_r'])+H_bar['H_3']@W['W_3']@W['W_3'].conj().T@H_bar['H_3'].conj().T@np.linalg.inv(temp_F_3))[1]
