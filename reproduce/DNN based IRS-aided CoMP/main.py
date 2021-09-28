@@ -12,7 +12,7 @@ import scipy.io as sio
 warnings.filterwarnings(action='ignore')
 USE_CUDA = torch.cuda.is_available()
 if USE_CUDA:
-    device = torch.device("cuda:0")
+    device = torch.device("cuda:1")
     print("running on the GPU")
 else:
     device = torch.device("cpu")
