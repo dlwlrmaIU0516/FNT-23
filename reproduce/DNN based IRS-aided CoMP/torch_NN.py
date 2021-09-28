@@ -18,18 +18,18 @@ class IRS_CoMP_Net(nn.Module):
         self.d = d
         self.P = P
 
-        self.fc1_1 = nn.Linear(self.N_t*self.N_r*2*self.N_BS*self.K,7200) # direct link
-        self.fc1_2 = nn.Linear(self.N_t*self.M*2*self.N_BS,7200) # reflect link for BS-ISR
-        self.fc1_3 = nn.Linear(self.M*self.N_r*2*self.K,7200) # reflect link for ISR-User
+        self.fc1_1 = nn.Linear(self.N_t*self.N_r*2*self.N_BS*self.K,8192) # direct link
+        self.fc1_2 = nn.Linear(self.N_t*self.M*2*self.N_BS,8192) # reflect link for BS-ISR
+        self.fc1_3 = nn.Linear(self.M*self.N_r*2*self.K,8192) # reflect link for ISR-User
 
-        self.fc2 = nn.Linear(7200*2+7200,7200)
-        self.fc3 = nn.Linear(7200,7200)
+        self.fc2 = nn.Linear(8192*2+8192,8192)
+        self.fc3 = nn.Linear(8192+self.N_t*self.N_r*2*self.N_BS*self.K+self.N_t*self.M*2*self.N_BS+self.M*self.N_r*2*self.K,8192)
 
-        self.fc4_1 = nn.Linear(7200,7200)
-        self.fc4_2 = nn.Linear(7200,7200)
+        self.fc4_1 = nn.Linear(8192,8192)
+        self.fc4_2 = nn.Linear(8192,8192)
 
-        self.fc5_1 = nn.Linear(7200,N_BS*d*K*N_t*2)
-        self.fc5_2 = nn.Linear(7200,M*2)
+        self.fc5_1 = nn.Linear(8192,N_BS*d*K*N_t*2)
+        self.fc5_2 = nn.Linear(8192,M*2)
         
     def IRS_normalization(self, y2):
         temp = torch.reshape(y2,(self.batch_size,self.M,2))
@@ -54,13 +54,15 @@ class IRS_CoMP_Net(nn.Module):
         return torch.cat([w1,w2,w3],2)
 
     def forward(self, x1,x2,x3):
-
+        initial_x1 = x1
+        initial_x2 = x2
+        initial_x3 = x3
         x1 = F.relu(self.fc1_1(x1))
         x2 = F.relu(self.fc1_2(x2))
         x3 = F.relu(self.fc1_3(x3))
 
         x = F.relu(self.fc2(torch.cat([x1,x2,x3],1)))
-        x = F.tanh(self.fc3(x))
+        x = F.tanh(self.fc3(torch.cat([x,initial_x1,initial_x2,initial_x3])))
 
         y1 = self.fc4_1(x)
         y2 = self.fc4_2(x)
