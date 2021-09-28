@@ -62,7 +62,7 @@ class IRS_CoMP_Net(nn.Module):
         x3 = F.relu(self.fc1_3(x3))
 
         x = F.relu(self.fc2(torch.cat([x1,x2,x3],1)))
-        x = F.tanh(self.fc3(torch.cat([x,initial_x1,initial_x2,initial_x3])))
+        x = F.tanh(self.fc3(torch.cat([x,initial_x1,initial_x2,initial_x3],1)))
 
         y1 = self.fc4_1(x)
         y2 = self.fc4_2(x)
