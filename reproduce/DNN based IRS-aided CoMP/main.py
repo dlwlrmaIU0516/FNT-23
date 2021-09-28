@@ -12,7 +12,7 @@ import scipy.io as sio
 warnings.filterwarnings(action='ignore')
 USE_CUDA = torch.cuda.is_available()
 if USE_CUDA:
-    device = torch.device("cuda:1")
+    device = torch.device("cuda:0")
     print("running on the GPU")
 else:
     device = torch.device("cpu")
@@ -21,7 +21,7 @@ print('cuda index:', torch.cuda.current_device())
 print('number of gpu:', torch.cuda.device_count())
 print('graphic name:', torch.cuda.get_device_name())
 #cuda = torch.device('cuda')
-#print(cuda)
+print(device)
 
 # GPU 할당 변경하기
 #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
