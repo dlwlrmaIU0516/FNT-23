@@ -25,7 +25,7 @@ print(cuda)
 
 # GPU 할당 변경하기
 GPU_NUM = 0 # 원하는 GPU 번호 입력
-device = torch.device(f'cuda:{GPU_NUM}' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:{GPU_NUM}' if torch.cuda.is_available() else 'cpu')
 torch.cuda.set_device(device) # change allocation of current GPU
 print ('Current cuda device ', torch.cuda.current_device()) # check
 
