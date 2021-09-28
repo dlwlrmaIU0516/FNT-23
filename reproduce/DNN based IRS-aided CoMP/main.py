@@ -24,10 +24,10 @@ cuda = torch.device('cuda')
 print(cuda)
 
 # GPU 할당 변경하기
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print ('Available devices ', torch.cuda.device_count())
-print ('Current cuda device ', torch.cuda.current_device())
-print(torch.cuda.get_device_name(device))
+#device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#print ('Available devices ', torch.cuda.device_count())
+#print ('Current cuda device ', torch.cuda.current_device())
+#print(torch.cuda.get_device_name(device))
 
     
 NN_CoMP = IRS_CoMP_Net(p['N_t'],p['N_r'],p['M'],p['num_BS'],p['K'],p['d'],p['batch_size'],p['Tx_P'])
