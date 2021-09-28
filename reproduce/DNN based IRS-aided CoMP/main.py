@@ -20,8 +20,8 @@ else:
 print('cuda index:', torch.cuda.current_device())
 print('number of gpu:', torch.cuda.device_count())
 print('graphic name:', torch.cuda.get_device_name())
-cuda = torch.device('cuda')
-print(cuda)
+#cuda = torch.device('cuda')
+#print(cuda)
 
 # GPU 할당 변경하기
 #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
