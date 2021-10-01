@@ -17,7 +17,7 @@ p['circle_radious'] = 30 # [m]
 p['IRS_altitude'] = 10 # [m]
 p['N_t'] = 6 # the number of transmit antennas
 p['N_r'] = 6 # the number of received antennas
-p['M'] = 50 # the number of IRS elements [20,50,100]
+p['M'] = 100 # the number of IRS elements [20,50,100]
 p['b'] = 2 #  the number of bits to represent the resolution levels of IRS
 p['K'] = 3 # the number of users
 
