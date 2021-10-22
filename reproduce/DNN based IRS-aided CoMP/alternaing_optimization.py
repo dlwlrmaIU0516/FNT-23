@@ -7,11 +7,12 @@ def AO_cvx(p,H):
     Phi = f_initialize_Phi(p,H)
     min_rate = []
     while 1:
-        H_bar = f_construct_H_bar(p,H,Phi)
+        H_hat = f_imperfect_channel_modeling(H,p)
+        H_bar = f_construct_H_bar(p,H_hat,Phi)
         U = f_update_U(p,H_bar,W)
         Q = f_update_Q(p,H_bar,W,U)
         W = f_update_W(p,H_bar,W,U,Q)
-        Phi = f_update_Phi(p,H_bar,W,U,Q,H,Phi)
+        Phi = f_update_Phi(p,H_bar,W,U,Q,H_hat,Phi)
         min_rate = np.append(min_rate,f_min_rate(p,H,W,U,Q,Phi))
         if np.size(min_rate)>2 and np.abs(min_rate[-1]-min_rate[-2])<1e-2:
             break
@@ -255,3 +256,28 @@ def f_heuristic_update(p,W,U,Q,H,prev,current):
     else:
         final_Phi=prev
     return final_Phi
+
+def f_imperfect_channel_modeling(H,p):
+
+    H['bs1_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue1']))*1j)/np.sqrt(2)
+    H['bs2_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue1']))*1j)/np.sqrt(2)
+    H['bs3_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue1']))*1j)/np.sqrt(2)
+
+    H['bs1_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue2']))*1j)/np.sqrt(2)
+    H['bs2_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue2']))*1j)/np.sqrt(2)
+    H['bs3_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue2']))*1j)/np.sqrt(2)
+
+    H['bs1_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue3']))*1j)/np.sqrt(2)
+    H['bs2_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue3']))*1j)/np.sqrt(2)
+    H['bs3_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue3']))*1j)/np.sqrt(2)
+
+    # Rician
+    H['bs1_IRS'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_IRS']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_IRS']))*1j)/np.sqrt(2)
+    H['bs2_IRS'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_IRS']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_IRS']))*1j)/np.sqrt(2)
+    H['bs3_IRS'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_IRS']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_IRS']))*1j)/np.sqrt(2)
+    H['IRS_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue1']))*1j)/np.sqrt(2)
+    H['IRS_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue2']))*1j)/np.sqrt(2)
+    H['IRS_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue3']))*1j)/np.sqrt(2)
+
+    H_hat = H
+    return H_hat

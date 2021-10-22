@@ -165,3 +165,28 @@ def train(loss,optimizer):
     optimizer.zero_grad()
     loss.backward()
     optimizer.step() 
+
+def f_imperfect_channel_modeling(H,p):
+
+    H['bs1_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue1']))*1j)/np.sqrt(2)
+    H['bs2_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue1']))*1j)/np.sqrt(2)
+    H['bs3_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue1']))*1j)/np.sqrt(2)
+
+    H['bs1_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue2']))*1j)/np.sqrt(2)
+    H['bs2_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue2']))*1j)/np.sqrt(2)
+    H['bs3_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue2']))*1j)/np.sqrt(2)
+
+    H['bs1_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_ue3']))*1j)/np.sqrt(2)
+    H['bs2_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_ue3']))*1j)/np.sqrt(2)
+    H['bs3_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_ue3']))*1j)/np.sqrt(2)
+
+    # Rician
+    H['bs1_IRS'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs1_IRS']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs1_IRS']))*1j)/np.sqrt(2)
+    H['bs2_IRS'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs2_IRS']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs2_IRS']))*1j)/np.sqrt(2)
+    H['bs3_IRS'] += (np.random.normal(0,p['gamma'] ,np.shape(H['bs3_IRS']))+np.random.normal(0,p['gamma'] ,np.shape(H['bs3_IRS']))*1j)/np.sqrt(2)
+    H['IRS_ue1'] += (np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue1']))+np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue1']))*1j)/np.sqrt(2)
+    H['IRS_ue2'] += (np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue2']))+np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue2']))*1j)/np.sqrt(2)
+    H['IRS_ue3'] += (np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue3']))+np.random.normal(0,p['gamma'] ,np.shape(H['IRS_ue3']))*1j)/np.sqrt(2)
+
+    H_hat = H
+    return H_hat
