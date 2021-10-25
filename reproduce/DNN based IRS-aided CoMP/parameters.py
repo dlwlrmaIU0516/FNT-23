@@ -35,7 +35,7 @@ p['channel_realization'] = 500 # channel realizations
 p['Tx_P_dB'] = 0
 p['Tx_P'] = 10**(p['Tx_P_dB']/10)
 p['gamma'] = 0.1
-s
+
 p['batch_size'] = 512
 p['lr'] = 0.01
 p['iter'] = 200000
