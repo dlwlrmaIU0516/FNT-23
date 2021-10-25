@@ -10,7 +10,7 @@ import scipy.io as sio
 
 warnings.filterwarnings(action='ignore')
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
+p['gamma'] = 0
 p['batch_size'] = 1
 test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+10,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)

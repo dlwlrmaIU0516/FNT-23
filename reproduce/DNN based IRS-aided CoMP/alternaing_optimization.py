@@ -48,7 +48,6 @@ def f_update_U(p,H_bar,W):
 
 def f_update_Q(p,H_bar,W,U):
     Q = {}
-
     Q['Q_1'] = np.linalg.inv(np.eye(p['d'])-W['W_1'].conj().T@H_bar['H_1'].conj().T@U['U_1'])
     Q['Q_2'] = np.linalg.inv(np.eye(p['d'])-W['W_2'].conj().T@H_bar['H_2'].conj().T@U['U_2'])
     Q['Q_3'] = np.linalg.inv(np.eye(p['d'])-W['W_3'].conj().T@H_bar['H_3'].conj().T@U['U_3'])
