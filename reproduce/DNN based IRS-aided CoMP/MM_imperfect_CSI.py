@@ -48,7 +48,7 @@ plt.xlabel('P_tx [dB]')
 plt.ylabel('Avg. min rate [bps/Hz]')
 #plt.show()
 
-save_mat_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}_imperfect/BCD_avg_min_rate.mat'
-save_fig_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}_imperfect/BCD_avg_min_rate.png'
-sio.savemat(save_mat_template_avg_min_rate.format(p['Tx_P_dB'],p['M']), {'avg_min_rate':avg_min_rate})
-plt.savefig(save_fig_template_avg_min_rate.format(p['Tx_P_dB'],p['M']))
+save_mat_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}_imperfect_gamma_{}/BCD_avg_min_rate.mat'
+save_fig_template_avg_min_rate = './fig/Tx_P[dB]_{}_M_{}_imperfect_gamma_{}/BCD_avg_min_rate.png'
+sio.savemat(save_mat_template_avg_min_rate.format(p['Tx_P_dB'],p['M'],p['gamma']), {'avg_min_rate':avg_min_rate})
+plt.savefig(save_fig_template_avg_min_rate.format(p['Tx_P_dB'],p['M'],p['gamma']))
