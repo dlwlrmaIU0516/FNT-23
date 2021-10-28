@@ -17,7 +17,7 @@ p['circle_radious'] = 30 # [m]
 p['IRS_altitude'] = 10 # [m]
 p['N_t'] = 6 # the number of transmit antennas
 p['N_r'] = 6 # the number of received antennas
-p['M'] = 50 # the number of IRS elements [20,50,100]
+p['M'] = 30 # the number of IRS elements [20,50,100]
 p['b'] = 2 #  the number of bits to represent the resolution levels of IRS
 p['K'] = 3 # the number of users
 
@@ -34,7 +34,7 @@ p['np'] = 10**(p['variance']*0.001/10)
 p['channel_realization'] = 500 # channel realizations
 p['Tx_P_dB'] = 0
 p['Tx_P'] = 10**(p['Tx_P_dB']/10)
-p['gamma'] = 0.1
+p['gamma'] = 0
 
 p['batch_size'] = 512
 p['lr'] = 0.01
