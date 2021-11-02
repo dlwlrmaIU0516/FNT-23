@@ -38,4 +38,4 @@ p['gamma'] = p['np']*0.1
 
 p['batch_size'] = 512
 p['lr'] = 0.01
-p['iter'] = 10000
+p['iter'] = 200000
