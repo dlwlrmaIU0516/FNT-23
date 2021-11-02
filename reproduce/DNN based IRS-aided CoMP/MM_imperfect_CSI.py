@@ -30,7 +30,7 @@ for P_idx in test_P_tx:
 
 
 
-path = './fig/Tx_P[dB]_{}_M_{}_imperfect_imperfect_gamma_{}'
+path = './fig/Tx_P[dB]_{}_M_{}_imperfect_gamma_{}'
 try:
     if not(os.path.isdir(path.format(p['Tx_P_dB'],p['M'],p['gamma']))):
         os.makedirs(os.path.join(path.format(p['Tx_P_dB'],p['M'],p['gamma'])))
