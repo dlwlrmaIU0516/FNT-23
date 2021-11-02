@@ -15,7 +15,7 @@ p['batch_size'] = 1
 test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+10,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)
 avg_min_rate = np.zeros(np.size(test_P_tx))
-num_experiments = 10
+num_experiments = 30
 idx = 0
 for P_idx in test_P_tx:
     min_rate_temp = []
@@ -30,10 +30,10 @@ for P_idx in test_P_tx:
 
 
 
-path = './fig/Tx_P[dB]_{}_M_{}_imperfect'
+path = './fig/Tx_P[dB]_{}_M_{}_imperfect_imperfect_gamma_{}'
 try:
-    if not(os.path.isdir(path.format(p['Tx_P_dB'],p['M']))):
-        os.makedirs(os.path.join(path.format(p['Tx_P_dB'],p['M'])))
+    if not(os.path.isdir(path.format(p['Tx_P_dB'],p['M'],p['gamma']))):
+        os.makedirs(os.path.join(path.format(p['Tx_P_dB'],p['M'],p['gamma'])))
 except OSError as e:
     if e.errno != errno.EEXIST:
         print("Failed to create directory!!!!!")
