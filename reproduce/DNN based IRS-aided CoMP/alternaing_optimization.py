@@ -217,8 +217,8 @@ def f_construct_H_bar(p,H,Phi):
 
     return H_bar
 
-def f_min_rate(p,H_bar,W,U,E,Phi):
-    rate = f_rate(p,H_bar,W,U,E,Phi)
+def f_min_rate(p,H_bar,W,U,Q,Phi):
+    rate = f_rate(p,H_bar,W,U,Q,Phi)
     min_rate = np.min([rate['rate_1'],rate['rate_2'],rate['rate_3']])
     return min_rate
 

@@ -15,7 +15,7 @@ p['batch_size'] = 1
 test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+10,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)
 avg_min_rate = np.zeros(np.size(test_P_tx))
-num_experiments = 30
+num_experiments = 10
 idx = 0
 for P_idx in test_P_tx:
     min_rate_temp = []
