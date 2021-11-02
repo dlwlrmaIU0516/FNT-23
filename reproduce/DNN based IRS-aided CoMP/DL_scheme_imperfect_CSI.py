@@ -51,10 +51,10 @@ for idx in range(p['iter']):
 
 
 
-path = './fig/Tx_P[dB]_{}_M_{}_imperfect'
+path = './fig/Tx_P[dB]_{}_M_{}_imperfect_gamma_{}'
 try:
-    if not(os.path.isdir(path.format(p['Tx_P_dB'],p['M']))):
-        os.makedirs(os.path.join(path.format(p['Tx_P_dB'],p['M'])))
+    if not(os.path.isdir(path.format(p['Tx_P_dB'],p['M'],p['gamma']))):
+        os.makedirs(os.path.join(path.format(p['Tx_P_dB'],p['M'],p['gamma'])))
 except OSError as e:
     if e.errno != errno.EEXIST:
         print("Failed to create directory!!!!!")
@@ -68,10 +68,10 @@ plt.legend(['Proposed (P_tx = 10 [dB])'])
 plt.xlabel('Iteration')
 plt.ylabel('Avg. min rate [bps/Hz]')
 # plt.show()
-save_mat_template_training_converge = './fig/Tx_P[dB]_{}_M_{}_imperfect/DL_converge.mat'
-save_fig_template_training_converge = './fig/Tx_P[dB]_{}_M_{}_imperfect/DL_converge.png'
-sio.savemat(save_mat_template_training_converge.format(p['Tx_P_dB'],p['M']), {'avg_min_rate':object})
-plt.savefig(save_fig_template_training_converge.format(p['Tx_P_dB'],p['M']))
+save_mat_template_training_converge = './fig/Tx_P[dB]_{}_M_{}_imperfect_gamma_{}/DL_converge.mat'
+save_fig_template_training_converge = './fig/Tx_P[dB]_{}_M_{}_imperfect_gamma_{}/DL_converge.png'
+sio.savemat(save_mat_template_training_converge.format(p['Tx_P_dB'],p['M'],p['gamma']), {'avg_min_rate':object})
+plt.savefig(save_fig_template_training_converge.format(p['Tx_P_dB'],p['M'],p['gamma']))
 
 test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+10,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)
