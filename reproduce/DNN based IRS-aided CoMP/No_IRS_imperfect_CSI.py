@@ -39,7 +39,6 @@ except OSError as e:
         print("Failed to create directory!!!!!")
         raise
 
-
 plt.figure(1)
 plt.grid()
 plt.plot(test_P_tx_dB,avg_min_rate)
