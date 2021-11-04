@@ -77,7 +77,7 @@ test_P_tx_dB = range(p['Tx_P_dB']-10,p['Tx_P_dB']+10,2)
 test_P_tx = 10**(np.asarray(test_P_tx_dB)/10)
 test_avg_min_rate = np.zeros(np.size(test_P_tx))
 idx_temp = 0
-p['batch_size'] = 10
+p['batch_size'] = 5000
 NN_CoMP.batch_size = p['batch_size']
 for P_idx in test_P_tx:
     NN_CoMP.P = P_idx
