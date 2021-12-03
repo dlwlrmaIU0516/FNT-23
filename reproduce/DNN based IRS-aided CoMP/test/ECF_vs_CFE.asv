@@ -1,0 +1,54 @@
+clear,clc,close all
+
+Nt = 4;
+Nr = 4;
+
+K = 5;
+
+alpha = 10;
+C_back = 4;
+P = 1;
+T = 10;
+
+for alpha = 1
+    for C_back = 30
+        
+        %% CFE
+        for idx = 1 : 1
+            [H,H_bar] = rician(Nt,Nr,alpha,K);
+            [U,V,S] = svd(H_bar*H_bar');
+            
+            variance_q = det(P*K/(Nt*(K+1))*V+alpha*P/(K+1)*eye(Nr))^(1/Nr)/(2^(C_back/Nr)-1);
+            
+            var_CFE(idx) = alpha*Nt*(1+variance_q)/(alpha*P*T+Nt*(1+variance_q)*(1+K));
+            
+        end
+        CFE(alpha,C_back) = mean(var_CFE);
+        
+        
+        %% ECF
+        for idx = 1 : 1
+            var_h_tilde = alpha^2*P*Nt/(K+1)/(alpha*P*T+Nt*(1+K));
+            var_ECF(idx) = var_h_tilde*2^(-T*C_back/(Nr*Nt));
+        end
+        ECF(alpha,C_back) = mean(var_ECF);
+        
+    end
+    
+end
+figure(1)
+mesh(1:30,1:30,CFE,'facecolor','r');
+% xlabel('Nt')
+% ylabel('Nr')
+% zlabel('CFE_{error}')
+hold on
+% figure(2)
+mesh(1:30,1:30,ECF,'facecolor','b');
+% xlabel('Nt')
+% ylabel('Nr')
+xlabel('alpha')
+ylabel('C')
+% zlabel('ECF_{error}')
+zlabel('Error')
+% legend('CFD','ECF')
+title(['K=',num2str(K),', alpha=',num2str(alpha),', C =',num2str(C_back),', T=',num2str(T)])
