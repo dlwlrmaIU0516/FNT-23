@@ -27,7 +27,8 @@ p['batch_size'] = 1000
 p['N_r_range'] = 10
 p['N_t_range'] = 10
 p['C'] = 4
-p['SNR'] = 10**(10/10)
+p['SNR_dB']
+p['SNR'] = 10**(p['SNR_dB']/10)
 p['lr'] = 0.01
 p['alpha'] = torch.tensor(1.)
 p['K'] = torch.tensor(2.)
