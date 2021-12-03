@@ -31,7 +31,7 @@ p['SNR'] = 10**(10/10)
 p['lr'] = 0.01
 p['alpha'] = torch.tensor(1.)
 p['K'] = torch.tensor(2.)
-p['T'] = p['N_t']
+
 
 class Coordination_net(nn.Module):
 
@@ -78,6 +78,7 @@ for Nt_idx in range(p['N_t_range']):
     for Nr_idx in range(p['N_r_range']):
         p['N_r'] = Nr_idx+1
         p['N_t'] = Nt_idx+1
+        p['T'] = p['N_t']
         DNN = Coordination_net(p).to(device)
         optimizer = optim.SGD(DNN.parameters(), lr=p['lr'])
         loss = nn.MSELoss().to(device)
