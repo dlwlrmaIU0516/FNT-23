@@ -24,8 +24,8 @@ print(device)
 
 p = {}
 p['batch_size'] = 1000
-p['N_r_range'] = 10
-p['N_t_range'] = 10
+p['N_r_range'] = 30
+p['N_t_range'] = 30
 p['C'] = 4
 p['SNR_dB'] = 10
 p['SNR'] = 10**(p['SNR_dB']/10)
