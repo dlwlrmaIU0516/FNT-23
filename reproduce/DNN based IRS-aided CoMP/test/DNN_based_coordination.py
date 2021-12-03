@@ -83,7 +83,7 @@ for Nt_idx in range(p['N_t_range']):
         optimizer = optim.SGD(DNN.parameters(), lr=p['lr'])
         loss = nn.MSELoss().to(device)
         H_bar = torch.ones(size=(p['batch_size'],p['N_r']*p['N_t']*2))
-        for idx in range(30000):
+        for idx in range(10):
             H = torch.sqrt(p['alpha'])*torch.sqrt(p['K']/(p['K']+1))*H_bar\
             +torch.sqrt(p['alpha'])*torch.sqrt(1/(p['K']+1))*torch.normal(mean = 0, std = 1, size=(p['batch_size'],p['N_r']*p['N_t']*2))/torch.sqrt(torch.tensor(2))
 
@@ -95,7 +95,7 @@ for Nt_idx in range(p['N_t_range']):
             loss_value = loss(H.to(device),estimate)
             train(optimizer,loss_value)
             if idx % 100 == 0:
-                print('Iter ',idx,': ',loss_value.to('cpu'))
+                print('Iter ',idx,',N_t ',p['N_t'],',N_r ',p['N_t'],': ',loss_value.to('cpu'))
 
         # Test
         p['batch_size'] = 10000
@@ -115,5 +115,13 @@ for Nt_idx in range(p['N_t_range']):
         print('Test MSE loss : ',loss_value.to('cpu'))
         loss_temp[Nt_idx,Nr_idx] = loss_value.to('cpu')
 
-save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}/DL_converge.mat'
+save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}/MSE.mat'
+path = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}'
+try:
+    if not(os.path.isdir(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T']))):
+        os.makedirs(os.path.join(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T'])))
+except OSError as e:
+    if e.errno != errno.EEXIST:
+        print("Failed to create directory!!!!!")
+        raise
 sio.savemat(save_mat_template_MSE.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T']), {'MSE':loss_temp})
