@@ -96,7 +96,7 @@ for Nt_idx in range(p['N_t_range']):
             loss_value = loss(H.to(device),estimate)
             train(optimizer,loss_value)
             if idx % 100 == 0:
-                print('Iter ',idx,',N_t ',p['N_t'],',N_r ',p['N_t'],': ',loss_value.to('cpu'))
+                print('Iter ',idx,',N_t ',p['N_t'],',N_r ',p['N_r'],': ',loss_value.to('cpu'))
 
         # Test
         p['batch_size'] = 10000
