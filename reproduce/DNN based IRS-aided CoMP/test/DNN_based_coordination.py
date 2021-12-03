@@ -84,7 +84,7 @@ for Nt_idx in range(p['N_t_range']):
         optimizer = optim.SGD(DNN.parameters(), lr=p['lr'])
         loss = nn.MSELoss().to(device)
         H_bar = torch.ones(size=(p['batch_size'],p['N_r']*p['N_t']*2))
-        for idx in range(10000):
+        for idx in range(30000):
             H = torch.sqrt(p['alpha'])*torch.sqrt(p['K']/(p['K']+1))*H_bar\
             +torch.sqrt(p['alpha'])*torch.sqrt(1/(p['K']+1))*torch.normal(mean = 0, std = 1, size=(p['batch_size'],p['N_r']*p['N_t']*2))/torch.sqrt(torch.tensor(2))
 
@@ -99,7 +99,7 @@ for Nt_idx in range(p['N_t_range']):
                 print('Iter ',idx,',N_t ',p['N_t'],',N_r ',p['N_r'],': ',loss_value.to('cpu'))
 
         # Test
-        p['batch_size'] = 10000
+        p['batch_size'] = 1000
         DNN.batch_size = p['batch_size']
         H_bar = torch.ones(size=(p['batch_size'],p['N_r']*p['N_t']*2))
         H = torch.sqrt(p['alpha'])*torch.sqrt(p['K']/(p['K']+1))*H_bar\
