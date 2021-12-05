@@ -1,19 +1,19 @@
 clear,clc,close all
 
-Nt_range = 1:10;
-Nr_range = 1:10;
+Nt_range = 1:30;
+Nr_range = 1:30;
 
-K = 2;
+K = 3;
 
-alpha = 1;
-C_back = 4;
+alpha = 5;
+C_back = 8;
 P = 10^(10/10);
-% T = 30;
+T = 30;
 
 for Nt = Nt_range
     for Nr = Nr_range
     H_bar = (ones(Nr,Nt)+j*ones(Nr,Nt));
-    T = Nt;
+%     T = Nt;
         
         %% CFE
         for idx = 1 : 1

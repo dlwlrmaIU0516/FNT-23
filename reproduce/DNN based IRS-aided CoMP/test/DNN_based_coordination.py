@@ -32,7 +32,7 @@ p['SNR'] = 10**(p['SNR_dB']/10)
 p['lr'] = 0.01
 p['alpha'] = torch.tensor(1.)
 p['K'] = torch.tensor(2.)
-
+p['T'] = 30
 
 class Coordination_net(nn.Module):
 
@@ -79,7 +79,7 @@ for Nt_idx in range(p['N_t_range']):
     for Nr_idx in range(p['N_r_range']):
         p['N_r'] = Nr_idx+1
         p['N_t'] = Nt_idx+1
-        p['T'] = p['N_t']
+        #p['T'] = p['N_t']
         DNN = Coordination_net(p).to(device)
         optimizer = optim.SGD(DNN.parameters(), lr=p['lr'])
         loss = nn.MSELoss().to(device)
@@ -117,8 +117,8 @@ for Nt_idx in range(p['N_t_range']):
         print('Test MSE loss : ',loss_value.to('cpu'))
         loss_temp[Nt_idx,Nr_idx] = loss_value.to('cpu')
 
-save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}/MSE.mat'
-path = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}'
+save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}_fixed_T/MSE.mat'
+path = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}_fixed_T'
 try:
     if not(os.path.isdir(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T']))):
         os.makedirs(os.path.join(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T'])))
