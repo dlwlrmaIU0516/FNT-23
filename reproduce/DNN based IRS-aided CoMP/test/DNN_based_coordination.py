@@ -87,12 +87,12 @@ for Nt_idx in range(0,p['N_t_range'],10):
     for Nr_idx in range(0,p['N_r_range'],10):
         p['N_r'] = Nr_idx+1
         p['N_t'] = Nt_idx+1
-        p['T'] = p['N_t']
+        #p['T'] = p['N_t']
         DNN = Coordination_net(p).to(device)
         optimizer = optim.SGD(DNN.parameters(), lr=p['lr'])
         loss = nn.MSELoss().to(device)
         H_bar = torch.ones(size=(p['batch_size'],p['N_r']*p['N_t']*2))
-        for idx in range(30000):
+        for idx in range(1000):
             H = torch.sqrt(p['alpha'])*torch.sqrt(p['K']/(p['K']+1))*H_bar\
             +torch.sqrt(p['alpha'])*torch.sqrt(1/(p['K']+1))*torch.normal(mean = 0, std = 1, size=(p['batch_size'],p['N_r']*p['N_t']*2))/torch.sqrt(torch.tensor(2))
 
@@ -130,8 +130,8 @@ for Nt_idx in range(0,p['N_t_range'],10):
         print('Test MSE loss : ',loss_value.to('cpu'))
         loss_temp[Nt_idx,Nr_idx] = test_error
 
-save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}/MSE.mat'
-path = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}'
+save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}_fixed_T/MSE.mat'
+path = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}_fixed_T'
 try:
     if not(os.path.isdir(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T']))):
         os.makedirs(os.path.join(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T'])))
