@@ -24,8 +24,8 @@ print(device)
 
 p = {}
 p['batch_size'] = 1000
-p['N_r_range'] = 30
-p['N_t_range'] = 30
+p['N_r_range'] = 31
+p['N_t_range'] = 31
 p['C'] = 4
 p['SNR_dB'] = 10
 p['SNR'] = 10**(p['SNR_dB']/10)
@@ -43,13 +43,13 @@ class Coordination_net(nn.Module):
         self.N_r = p['N_r']
         self.C = p['C']
 
-        self.fc1 = nn.Linear(self.N_t*self.N_r*2,1280) # direct link
-        self.fc2 = nn.Linear(1280,640)
-        self.fc3 = nn.Linear(640,self.C)
+        self.fc1 = nn.Linear(self.N_t*self.N_r*2,5000) # direct link
+        self.fc2 = nn.Linear(5000,5000)
+        self.fc3 = nn.Linear(5000,self.C)
 
-        self.fc4 = nn.Linear(self.C,1280)
-        self.fc5 = nn.Linear(1280,1280)
-        self.fc6 = nn.Linear(1280,self.N_t*self.N_r*2)
+        self.fc4 = nn.Linear(self.C,5000)
+        self.fc5 = nn.Linear(5000,5000)
+        self.fc6 = nn.Linear(5000,self.N_t*self.N_r*2)
 
     def forward(self, x):
         
