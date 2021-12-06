@@ -43,28 +43,36 @@ class Coordination_net(nn.Module):
         self.N_r = p['N_r']
         self.C = p['C']
 
-        self.fc1 = nn.Linear(self.N_t*self.N_r*2,5000) # direct link
-        self.fc2 = nn.Linear(5000,5000)
-        self.fc3 = nn.Linear(5000,self.C)
+        self.fc1 = nn.Linear(self.N_t*self.N_r*2,500) # direct link
+        self.fc2 = nn.Linear(500,500)
+        self.fc3 = nn.Linear(500,500)
+        self.fc4 = nn.Linear(500,500)
+        self.fc5 = nn.Linear(500,self.C)
 
-        self.fc4 = nn.Linear(self.C,5000)
-        self.fc5 = nn.Linear(5000,5000)
-        self.fc6 = nn.Linear(5000,self.N_t*self.N_r*2)
+        self.fc6 = nn.Linear(self.C,500)
+        self.fc7 = nn.Linear(500,500)
+        self.fc8 = nn.Linear(500,500)
+        self.fc9 = nn.Linear(500,500)
+        self.fc10 = nn.Linear(500,self.N_t*self.N_r*2)
 
     def forward(self, x):
         
         x1 = F.relu(self.fc1(x))
         x2 = F.relu(self.fc2(x1))
         x3 = F.tanh(self.fc3(x2))
+        x4 = F.tanh(self.fc4(x3))
+        x5 = F.tanh(self.fc5(x4))
         
         with torch.no_grad():
-            b_x3 = self.b_layer(x3)-x3
+            b_x3 = self.b_layer(x5)-x5
         
-        x4 = self.fc4(b_x3+x3)
-        x5 = self.fc5(x4)
-        y = self.fc6(x5)
+        x6 = self.fc6(b_x3+x5)
+        x7 = self.fc7(x6)
+        x8 = self.fc8(x7)
+        x9 = self.fc9(x8)
+        y = self.fc10(x9)
 
-        return self.b_layer(x3),y
+        return self.b_layer(x5),y
 
     def b_layer(self,x):
         return 2*torch.bernoulli((1+x)/2)-1
