@@ -75,11 +75,11 @@ def train(optimizer,loss_value):
     optimizer.step()
 
 loss_temp = np.zeros([p['N_t_range'],p['N_r_range']])
-for Nt_idx in range(p['N_t_range']):
-    for Nr_idx in range(p['N_r_range']):
+for Nt_idx in range(0,p['N_t_range'],10):
+    for Nr_idx in range(0,p['N_r_range'],10):
         p['N_r'] = Nr_idx+1
         p['N_t'] = Nt_idx+1
-        #p['T'] = p['N_t']
+        p['T'] = p['N_t']
         DNN = Coordination_net(p).to(device)
         optimizer = optim.SGD(DNN.parameters(), lr=p['lr'])
         loss = nn.MSELoss().to(device)
@@ -95,8 +95,11 @@ for Nt_idx in range(p['N_t_range']):
             b_x3, estimate = DNN(received_pilot.to(device))
             loss_value = loss(H.to(device),estimate)
             train(optimizer,loss_value)
+            call_loss = loss_value.to('cpu')
+            error_temp = (H.to(device)-estimate)**2
+            error = torch.mean(error_temp[:,0:p['N_r']*p['N_t']]+error_temp[:,p['N_r']*p['N_t']:p['N_r']*p['N_t']*2])
             if idx % 100 == 0:
-                print('Iter ',idx,',N_t ',p['N_t'],',N_r ',p['N_r'],': ',loss_value.to('cpu'))
+                print('Iter ',idx,',N_t ',p['N_t'],',N_r ',p['N_r'],': ',call_loss.detach().numpy(),'error :',error.to('cpu').detach().numpy())
 
         # Test
         p['batch_size'] = 10000
@@ -111,14 +114,16 @@ for Nt_idx in range(p['N_t_range']):
 
         b_x3, estimate = DNN(received_pilot.to(device))
         loss_value = loss(H.to(device),estimate)
+        test_error_temp = (H.to(device)-estimate)**2
+        test_error = torch.mean(test_error_temp[:,0:p['N_r']*p['N_t']]+test_error_temp[:,p['N_r']*p['N_t']:p['N_r']*p['N_t']*2])
         p['batch_size'] = 1000
 
         print(b_x3)
         print('Test MSE loss : ',loss_value.to('cpu'))
-        loss_temp[Nt_idx,Nr_idx] = loss_value.to('cpu')
+        loss_temp[Nt_idx,Nr_idx] = test_error
 
-save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}_fixed_T/MSE.mat'
-path = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}_fixed_T'
+save_mat_template_MSE = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}/MSE.mat'
+path = './fig/P[dB]_{}_K_{}_alpha_{}_C_{}_T_{}'
 try:
     if not(os.path.isdir(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T']))):
         os.makedirs(os.path.join(path.format(p['SNR_dB'],p['K'],p['alpha'],p['C'],p['T'])))

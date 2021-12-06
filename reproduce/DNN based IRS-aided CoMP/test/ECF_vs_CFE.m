@@ -3,20 +3,20 @@ clear,clc,close all
 Nt_range = 1:30;
 Nr_range = 1:30;
 
-K = 3;
+K = 2;
 
-alpha = 5;
-C_back = 8;
+alpha = 1;
+C_back = 4;
 P = 10^(10/10);
-T = 30;
+% T = 30;
 
 for Nt = Nt_range
     for Nr = Nr_range
     H_bar = (ones(Nr,Nt)+j*ones(Nr,Nt));
-%     T = Nt;
+    T = Nt;
         
         %% CFE
-        for idx = 1 : 1
+        for idx = 1 : 1000
             [H] = rician(Nt,Nr,alpha,K,H_bar);
             [U,V,S] = svd(H_bar*H_bar');
             
@@ -53,4 +53,5 @@ xlabel('Nr')
 % zlabel('ECF_{error}')
 zlabel('Error')
 % legend('CFE','ECF')
-title(['P=',num2str(P),',K=',num2str(K),', alpha=',num2str(alpha),', C =',num2str(C_back),', T=',num2str(T)])
+title(['P=',num2str(P),',K=',num2str(K),', alpha=',num2str(alpha),', C =',num2str(C_back),', T=Nt'])
+legend(['CFE'],['ECF'],['DNN'])
